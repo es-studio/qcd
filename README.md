@@ -1,19 +1,21 @@
 # qcd - Quick Directory Changer
 
-`qcd`는 터미널(Shell)에서 디렉토리를 빠르고 편리하게 이동할 수 있도록 도와주는 Go 기반의 CLI 도구입니다. Bubbletea 기반의 미려한 TUI를 제공하며, 자주 방문하는 디렉토리가 자동으로 목록 상단에 노출됩니다.
+[한국어 README](README.ko.md)
 
-## 주요 기능
-- **디렉토리 등록**: `qcd add [경로]` (생략 시 현재 디렉토리 등록)
-- **디렉토리 삭제**: `qcd del [경로]` (생략 시 현재 디렉토리 삭제)
-- **인터랙티브 이동**: `qcd`
-  - 방향키(`↑`/`↓` 또는 `k`/`j`)로 디렉토리 선택 후 `Enter`를 누르면 해당 디렉토리로 즉시 이동
-  - `Esc`나 `q`로 취소 가능
-  - 디렉토리 목록은 **방문 횟수(Score)가 많은 순**, 방문 횟수가 같다면 **최근 방문 일시(Last Accessed)가 최신인 순**으로 정렬됩니다.
+`qcd` is a Go-based CLI tool designed to help you navigate directories quickly and conveniently in your terminal (Shell). It provides a beautiful TUI powered by Bubble Tea, and automatically displays your most frequently visited directories at the top of the list.
+
+## Key Features
+- **Register Directory**: `qcd add [path]` (registers the current directory if path is omitted)
+- **Delete Directory**: `qcd del [path]` (deletes the current directory from the list if path is omitted)
+- **Interactive Navigation**: `qcd`
+  - Select a directory using arrow keys (`↑`/`↓` or `k`/`j`) and press `Enter` to change to that directory instantly.
+  - Cancel navigation with `Esc` or `q`.
+  - The directory list is sorted by **visit frequency (Score)**, and directories with the same score are sorted by **last accessed time (most recent first)**.
 
 ---
 
-## 빌드 방법
-Go(1.25 이상 권장)가 설치되어 있는 상태에서 아래 명령을 실행하여 바이너리를 빌드합니다.
+## How to Build
+Ensure Go (1.25 or higher recommended) is installed, then run the following command to build the binary.
 
 ```bash
 go build -o qcd
@@ -21,64 +23,63 @@ go build -o qcd
 
 ---
 
-## 설치 및 쉘(Shell) 등록 방법
+## Installation & Shell Integration
 
-쉘에서 직접 `cd` 명령어를 수행하기 위해서는 쉘 함수(Shell Function) 형태로 등록해야 합니다. `qcd`는 사용 중인 쉘에 자동으로 연동 설정을 추가해 주는 `install` 명령을 제공합니다.
+To execute the `cd` command directly in the shell, `qcd` must be registered as a shell function. `qcd` provides an `install` command that automatically sets up this integration for your active shell.
 
-### 1. 자동 설치 (권장)
-바이너리를 실행하고자 하는 위치에 둔 상태로 아래 명령을 실행합니다.
+### 1. Automatic Installation (Recommended)
+Place the built binary in your preferred directory and run:
 
 ```bash
 ./qcd install
 ```
 
-실행하면 사용 중인 쉘 환경(`.zshrc` 또는 `.bashrc`)을 감지하여 쉘 함수 연동 코드를 자동으로 추가해 줍니다.
-설치 후 **새 터미널을 열거나 `source ~/.zshrc` (또는 `source ~/.bashrc`)를 실행**하여 설정을 활성화해 주세요.
+This will detect your active shell environment (`.zshrc` or `.bashrc`) and append the shell function integration code to the shell config file.
+After installation, **open a new terminal session or run `source ~/.zshrc` (or `source ~/.bashrc`)** to apply the changes.
 
-### 2. 수동 설치 (바이너리를 특정 위치로 이동하여 설치하는 경우)
-만약 바이너리를 `/usr/local/bin` 등의 시스템 PATH로 복사하여 사용하고 싶다면 다음과 같이 합니다.
+### 2. Manual Installation (For moving binary to a custom system path)
+If you prefer to copy the binary to a system PATH like `/usr/local/bin`, follow these steps:
 
-1. 바이너리를 복사합니다.
+1. Copy the binary:
    ```bash
    mv qcd /usr/local/bin/qcd
    ```
-2. 쉘 설정 파일(예: `~/.zshrc` 또는 `~/.bashrc`) 맨 아래에 다음 코드를 수동으로 추가합니다.
+2. Manually append the following code to the bottom of your shell configuration file (e.g., `~/.zshrc` or `~/.bashrc`):
    ```bash
-   # qcd 쉘 함수 등록
+   # Register qcd shell function
    eval "$(/usr/local/bin/qcd init)"
    ```
-3. 터미널을 재시작하거나 설정 파일을 새로고침합니다.
-
+3. Restart your terminal or source the configuration file.
 
 ---
 
-## 사용 가이드
+## Usage Guide
 
-### 1. 현재 디렉토리 등록
-자주 가는 디렉토리로 이동한 뒤 아래 명령을 실행합니다.
+### 1. Add Current Directory
+Navigate to your frequently visited directory and run:
 ```bash
 qcd add .
 ```
-특정 경로를 지정하여 등록할 수도 있습니다.
+You can also specify a target path to register:
 ```bash
 qcd add ~/Projects/my-app
 ```
 
-### 2. 현재 디렉토리 삭제
-목록에서 현재 디렉토리를 제거하려면 아래 명령을 실행합니다.
+### 2. Remove Current Directory
+To remove the current directory from the list, run:
 ```bash
 qcd del .
 ```
 
-### 3. 디렉토리 이동
-아무 인자 없이 `qcd`를 실행하면 등록된 디렉토리 목록 창이 뜹니다.
+### 3. Change Directory
+Run `qcd` without any arguments to open the registered directory list interface:
 ```bash
 qcd
 ```
-목록 창에서 원하는 디렉토리를 골라 `Enter`를 누르면 터미널의 현재 디렉토리가 해당 위치로 즉시 변경됩니다.
+Select the directory you want to go to and press `Enter`. The active directory in your shell will instantly change to the selected path.
 
 ---
 
-## 데이터 저장소 위치
-등록된 디렉토리 정보 및 스코어는 JSON 파일 형태로 아래 경로에 저장됩니다.
+## Storage Location
+The registered directory information and accessibility scores are saved in JSON format at:
 - Mac / Linux: `~/.config/qcd/dirs.json`
